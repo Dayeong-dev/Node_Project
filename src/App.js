@@ -13,6 +13,12 @@ import TopicList from './Components/TopicList';
 import TopicDetail from './Components/TopicDetail';
 import MyPage from './Components/MyPage';
 import CompleteTopic from './Components/CompleteTopic';
+import RegisterWriting from './Components/RegisterWriting';
+import WritingDetail from './Components/WritingDetail';
+import WritingList from './Components/WritingList';
+import UpdateWriting from './Components/UpdateWriting';
+
+
 
 class App extends Component {
   state = {
@@ -70,10 +76,14 @@ class App extends Component {
         <Route path="/join" render={(props) => <Join {...props} />} />
         <Route path="/login" render={(props) => <Login {...props} loginHandler={this.loginHandler} />} />
         <Route path="/registerTopic" render={(props) => <RegisterTopic {...props} {...this.state} />} />
+        <Route path="/registerWriting/:topicItemCode" render={(props) => <RegisterWriting {...props} {...this.state} />} />
         <Route path="/topicList" render={(props) => <TopicList {...props} {...this.state} />} />
+        <Route path="/writingList/:topicItemCode" render={(props) => <WritingList {...props} {...this.state} />} />
         <Route path="/topicDetail/:topicCode" render={(props) => <TopicDetail {...props} {...this.state} setTopicUpdateFalseHandler={this.setTopicUpdateFalseHandler} />} />
+        <Route path="/writingDetail/:userId/:topicItemCode" render={(props) => <WritingDetail {...props} {...this.state} />} />
         <Route path="/mypage" render={(props) => <MyPage {...props} {...this.state} setTopicUpdateTrueHandler={this.setTopicUpdateTrueHandler} />} />
         <Route path="/completeTopic" render={(props) => <CompleteTopic {...props} {...this.state} />} />
+        <Route path="/updateWriting/:userId/:topicItemCode/:writingContents" render={(props) => <UpdateWriting {...props} {...this.state} />} />
       </Router>
     );
   }

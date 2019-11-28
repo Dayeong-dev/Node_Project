@@ -13,16 +13,15 @@ class Login extends Component {
     loginHandler = (e) => {
         e.preventDefault();
         console.log(this.state.userId + " " + this.state.userPassword)
-        axios.post('http://localhost:3000/login', { userId: this.state.userId, userPassword: this.state.userPassword })
+        axios.post('http://localhost:3000/users/signIn', { userId: this.state.userId, userPassword: this.state.userPassword })
             .then((res) => {
-                if (res.data.result === 1) {
+                if (res.data.result) {
                     console.log('sucess');
-                    console.log(res.data);
-                    this.props.loginHandler(res.data.data);
+                    console.log(res.data.data);
+                    this.props.loginHandler(res.data.data[0]);
                     this.props.history.push('/');
                 } else {
                     console.log('fail')
-                    this.props.history.push('/');
                 }
             })
     }

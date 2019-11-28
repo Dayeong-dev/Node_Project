@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import RegisterWriting from './RegisterWritingPresenter'
+import UpdateWriting from './UpdateWritingPresenter'
 
-class RegisterWritingContainer extends Component {
+class UpdateWritingContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -9,11 +9,14 @@ class RegisterWritingContainer extends Component {
             writingContents: '',
         }
     }
+    componentWillMount = () => {
+        this.setState({writingContents : this.props.match.params.writingContents});
+    }
 
-    registerWritingHandler = (e) => {
+    putWritingHandler = (e) => {
         e.preventDefault();
-        fetch("http://localhost:3000/writing/registerWriting", {
-            method: 'POST',
+        fetch("http://localhost:3000/writing/updateWriting", {
+            method: 'PUT',
             headers:{
                 'Content-Type': 'application/json'
             }, 
@@ -27,7 +30,7 @@ class RegisterWritingContainer extends Component {
         }).then(res => { 
             if(res.result){
                 alert("Success");
-                this.props.history.push('/writingList/' + `${this.props.match.params.topicItemCode}`);
+                this.props.history.push('/writingDetail/' + `${this.props.match.params.userId}` + "/" + `${this.props.match.params.topicItemCode}`);
             }
             else{
                 alert("fail");
@@ -35,6 +38,7 @@ class RegisterWritingContainer extends Component {
         })
     }
 
+    
     changeHandler = (e) => {
         this.setState({
             [e.target.name]: e.target.value,
@@ -42,12 +46,13 @@ class RegisterWritingContainer extends Component {
         })
     }
 
+
     render() {
         return (
             <div>
-                <RegisterWriting
+                <UpdateWriting
                     {...this.state}
-                    registerWritingHandler={this.registerWritingHandler}
+                    putWritingHandler={this.putWritingHandler}
                     changeHandler={this.changeHandler}
                 />
             </div>
@@ -55,4 +60,4 @@ class RegisterWritingContainer extends Component {
     }
 }
 
-export default RegisterWritingContainer;
+export default UpdateWritingContainer;
