@@ -1,26 +1,82 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import history from './history';
+import { Router, Route } from 'react-router-dom';
+import axios from 'axios'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Main from './Components/Main';
+import Header from './Components/Header';
+import Login from './Components/Login';
+import Join from './Components/Join';
+import RegisterTopic from './Components/RegisterTopic';
+import TopicList from './Components/TopicList';
+import TopicDetail from './Components/TopicDetail';
+import MyPage from './Components/MyPage';
+import CompleteTopic from './Components/CompleteTopic';
+
+class App extends Component {
+  state = {
+    user: null,
+    //주제글 수정 요구 상태
+    topicUpdateReq: false,
+  }
+
+  async componentWillMount() {
+    await this._getUserSession();
+
+  }
+
+  //세션관리
+  _getUserSession = () => {
+    if (window.sessionStorage.getItem('user')) {
+      this.setState({
+        user: JSON.parse(window.sessionStorage.getItem('user'))
+      })
+    }
+  }
+
+  loginHandler = (item) => {
+    this.setState({
+      user: item,
+    })
+    window.sessionStorage.setItem('user', JSON.stringify(this.state.user));
+
+  }
+
+  logoutHandler = (item) => {
+    this.setState({
+      user: null
+    })
+    history.push('/');
+    window.sessionStorage.clear();
+  }
+
+  setTopicUpdateTrueHandler = () => {
+    this.setState({ topicUpdateReq: true })
+  }
+
+  setTopicUpdateFalseHandler = () => {
+    this.setState({ topicUpdateReq: false })
+  }
+
+
+
+  render() {
+    const { user } = this.state;
+    return (
+      <Router history={history}>
+        <Header user={user} logoutHandler={this.logoutHandler} />
+        <Route exact path="/" render={(props) => <Main {...props} {...this.state} />} />
+        <Route path="/join" render={(props) => <Join {...props} />} />
+        <Route path="/login" render={(props) => <Login {...props} loginHandler={this.loginHandler} />} />
+        <Route path="/registerTopic" render={(props) => <RegisterTopic {...props} {...this.state} />} />
+        <Route path="/topicList" render={(props) => <TopicList {...props} {...this.state} />} />
+        <Route path="/topicDetail/:topicCode" render={(props) => <TopicDetail {...props} {...this.state} setTopicUpdateFalseHandler={this.setTopicUpdateFalseHandler} />} />
+        <Route path="/mypage" render={(props) => <MyPage {...props} {...this.state} setTopicUpdateTrueHandler={this.setTopicUpdateTrueHandler} />} />
+        <Route path="/completeTopic" render={(props) => <CompleteTopic {...props} {...this.state} />} />
+      </Router>
+    );
+  }
 }
 
 export default App;
