@@ -33,11 +33,25 @@ class WritingListContainer extends Component {
             <div>
                 <br /><br />
                 <h3 style={{ marginLeft: "700px" }}>글목록</h3>
-                <Table responsive style={{ width: '800px', margin: '10px 380px' }}>
+                {this.state.writingData == [] ?
+                <div>
+                    <Table responsive style={{ width: '800px', margin: '10px 380px' }}>
                     <thead>
                         <tr>
-                            <th>주제명</th>
-                            <th>챕터명</th>
+                            <th>주제이름</th>
+                            <th>주제목차</th>
+                            <th>작성자</th>
+                            <th>추천 수</th>
+                        </tr>
+                    </thead>
+                    </Table>
+                </div> : 
+                <div>
+                    <Table responsive style={{ width: '800px', margin: '10px 380px' }}>
+                    <thead>
+                        <tr>
+                            <th>주제이름</th>
+                            <th>주제목차</th>
                             <th>작성자</th>
                             <th>추천 수</th>
                         </tr>
@@ -52,7 +66,9 @@ class WritingListContainer extends Component {
                             )
                         )}
                     </tbody>
-                </Table>
+                    </Table>
+                </div>
+                }
                 <Link to={"/registerWriting/" + this.props.match.params.topicItemCode} style={{ marginLeft: "1050PX" }}><Button>등록하기</Button></Link>
                 <br/><br/>
             </div>

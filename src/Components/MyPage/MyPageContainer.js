@@ -6,15 +6,26 @@ import { Router, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 
 class MyPageContainer extends Component {
+    constructor(props){
+        super(props);
 
-    state = {
-        topicList: [],
-        topicList2: []
+        this.state = {
+            topicList: [],
+            writingList: []
+        }
     }
 
     componentDidMount() {
-        this.getUserInfo()
+        this._reset();
+        this.getUserInfo();
 
+    }
+
+    _reset = () => {
+        this.setState({
+            topicList: [],
+            writingList: []
+        })
     }
 
     //마이페이지 정보 불러오기
@@ -33,19 +44,18 @@ class MyPageContainer extends Component {
                 }
             })
 
-        axios.post('http://localhost:3000/mypage2', { userId: this.props.user.userId })
-            .then((res) => {
-                if (res.data.result === 1) {
-                    console.log(res.data.data)
-                    console.log('sucess');
-                    this.setState({
-                        topicList2: res.data.data
-                    })
-                } else {
-                    console.log('fail')
-                    this.props.history.push('/');
-                }
+            
+        fetch("http://localhost:3000/writing/getWriting")
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            data = data.filter(writing => {
+                return writing.userId == this.props.user.userId
             })
+            console.log(data);
+            this.setState({ writingList: data })
+        })
     }
 
     //수정을 위한 상태 변경
@@ -80,11 +90,11 @@ class MyPageContainer extends Component {
                 />
             )
         )
-        const topicLists2 = this.state.topicList2.map(topic =>
+        const writingList = this.state.writingList.map(writing =>
             (
                 <WritingList
-                    key={topic.topicCode}
-                    {...topic}
+                    key={writing.topicItemCode}
+                    {...writing}
 
                 />
             )
@@ -93,7 +103,7 @@ class MyPageContainer extends Component {
             <div>
 
                 <br /><br />
-                <h3 style={{ marginLeft: "720px" }}>주제목록</h3>
+                <h3 style={{ marginLeft: "740px" }}>주제목록</h3>
                 <Table responsive style={{ width: '650px', margin: '10px 470px' }}>
                     <thead>
                         <tr >
@@ -110,18 +120,17 @@ class MyPageContainer extends Component {
                 </Table>
                 <br /> <br />
 
-                <h3 style={{ marginLeft: "720px" }}>글목록</h3>
+                <h3 style={{ marginLeft: "752px" }}>글목록</h3>
                 <Table responsive style={{ width: '650px', margin: '10px 470px' }}>
                     <thead>
-                        <tr >
+                        <tr>
+                            <th style={{ width: '130px', textAlign: "center" }}>주제이름</th>
                             <th style={{ width: '130px', textAlign: "center" }}>주제목차</th>
                             <th style={{ width: '130px', textAlign: "center" }}>글작성자</th>
-                            <th style={{ width: '130px', textAlign: "center" }}>수정</th>
-                            <th style={{ width: '130px', textAlign: "center" }}>삭제</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {(topicLists2)}
+                        {(writingList)}
                     </tbody>
                 </Table>
                 <br /> <br />

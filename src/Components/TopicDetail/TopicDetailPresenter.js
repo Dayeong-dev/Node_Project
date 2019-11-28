@@ -4,6 +4,7 @@ import { InputGroup, FormControl } from 'react-bootstrap';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 
 const TopicDetailPresenter = (props) => {
+
     const styles = {
         width: '500px',
         marginLeft: '150px'

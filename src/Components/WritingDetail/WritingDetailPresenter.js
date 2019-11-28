@@ -15,8 +15,8 @@ const WritingDetailPresenter = (props) => {
                 <Row >
                     <Col xs={6} md={40}>
                         <ul style={styles}>
-                            <li>주제명 : {props.topicName}</li><br />
-                            <li>챕터명 : {props.topicItemName}</li><br />
+                            <li>주제이름 : {props.topicName}</li><br />
+                            <li>주제목차 : {props.topicItemName}</li><br />
                             <li>작성자 : {props.userId}</li><br />
                             <li>추천 수: {props.pickCount}</li><br />
                             <li>글 내용: {props.writingContents}</li>
